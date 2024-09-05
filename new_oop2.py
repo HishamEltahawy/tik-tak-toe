@@ -1,7 +1,7 @@
 class Player():
     def __init__(self, name, symbol) -> None:
-        self.name = name
-        self.symbol = symbol
+        self.name = ''
+        self.symbol = ''
     def choose_name(self):
         while True:
             choice = input('Type Your Name:')
