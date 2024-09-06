@@ -20,7 +20,7 @@ class Player():
                 print("Invalid Choice Just Single Letter")
         
 class Board():  
-    def __init__(self, board) -> None:
+    def __init__(self) -> None:
         self.board = [str(i) for i in range (1, 10)]
 
     def show_board(self):
@@ -67,6 +67,30 @@ class Menu():
                 print("Invalid choice...")
         return choice
 
-    
+class Game():
+    def __init__(self) -> None:
+        self.player = [Player(), Player()]
+        self.board = Board()
+        self.menu = Menu()
+        self.player_round = 0
+    def start_game(self):
+        pass
+    def setup_players(self):
+        pass
+    def play_game(self):
+        pass
+    def play_turn(self):
+        pass
+    def switch_player(self):
+        pass
+    def check_win(self):
+        pass
+    def check_draw(self):
+        pass
+    def restart_game(self):
+        pass
+    def quit_game(self):
+        pass
+
 
 
