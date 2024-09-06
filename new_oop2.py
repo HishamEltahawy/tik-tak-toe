@@ -41,7 +41,31 @@ class Board():
     def reset_game(self):
         self.board = [str(i) for i in range (1, 10)]
 
-
+class Menu():
+    def displayer_main_menu(self):
+        while True:
+            choice = input('''
+>>>>> Welcome in tek-tak-toe Game >>>>>
+              1- Start Game
+              2- Quit Game
+''')
+            if choice.isdegit() and len(choice) == 1 :
+                break
+            else:
+                print("Invalid choice...")
+        return choice
+    def displayer_end_menu(self):
+        while True:
+            choice = input('''
+>>>>> Game Over >>>>>
+    1- Restart Game
+    2- Quit Game
+''')           
+            if choice.isdegit() and len(choice) == 1 :
+                break
+            else:
+                print("Invalid choice...")
+        return choice
 
     
 
