@@ -1,5 +1,10 @@
+import os
+
+def clearScreen():
+    os.system("cls")
+
 class Player():
-    def __init__(self, name, symbol) -> None:
+    def __init__(self) -> None:
         self.name = ''
         self.symbol = ''
     def choose_name(self):
@@ -49,7 +54,7 @@ class Menu():
               1- Start Game
               2- Quit Game
 ''')
-            if choice.isdegit() and len(choice) == 1 :
+            if choice.isdecimal() == True and len(choice) == 1 :
                 break
             else:
                 print("Invalid choice...")
@@ -68,29 +73,69 @@ class Menu():
         return choice
 
 class Game():
-    def __init__(self) -> None:
+    def __init__(self) :
         self.player = [Player(), Player()]
         self.board = Board()
         self.menu = Menu()
-        self.player_round = 0
+        self.player_round = 1
     def start_game(self):
-        pass
+        choice = self.menu.displayer_main_menu()
+        if choice == "1":
+            self.setup_players()
+            self.play_game()
+        else:
+            print("Quiting Game.....")
     def setup_players(self):
-        pass
+        for counter, players in enumerate(self.player, start=1):
+            print(f"Player {counter} Enter your details >>>")
+            players.choose_name()
+            players.choose_symbol()
+            clearScreen()
     def play_game(self):
-        pass
+            while True:
+                self.play_turn()
+                if self.check_win() or self.check_draw() :
+                    choice = self.menu.displayer_end_menu()
+                    if choice == "1":
+                        self.restart_game()
+                    else:
+                        self.quit_game()
+                        break
     def play_turn(self):
-        pass
+        self.switch_players()
+        player = self.player[self.curren_player_index]
+        self.board.show_board()
+        print(f"{player.name}'s turn ({player.symbol})")
+        while True:
+            try:
+                cell_choice = int(input("choose a cell (1-9)"))
+                if  1 <= cell_choice <= 9 and self.board.update_board(choice=cell_choice, symbol=player.symbol):
+                    break
+                else:
+                    print("invalid choice try again")
+            except ValueError:
+                print("please enter a number between (1-9)")
+
     def switch_player(self):
-        pass
+        self.player_round = 1- self.player_round
     def check_win(self):
-        pass
+        win_combination = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8]
+        ,[0, 3, 6], [1, 4, 5], [2, 5, 8]
+        ,[0, 4, 8], [2, 4, 6]  ]
+        for combo in win_combination:
+            if self.board.board[combo[0]]  == self.board.board[combo[1]] == self.board.board[combo[2]]:
+                return True
+            else:
+                return False
     def check_draw(self):
         pass
     def restart_game(self):
-        pass
+        self.board.reset_game()
+        self.player_round = 1
+        self.play_game()
     def quit_game(self):
-        pass
+        print("Quiting Game.....")
 
 
-
+root = Game().start_game()
