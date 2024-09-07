@@ -66,7 +66,7 @@ class Menu():
     1- Restart Game
     2- Quit Game
 ''')           
-            if choice.isdegit() and len(choice) == 1 :
+            if choice.isdigit() and len(choice) == 1 :
                 break
             else:
                 print("Invalid choice...")
@@ -99,7 +99,10 @@ class Game():
                 if self.check_win() or self.check_draw():
                     if self.check_win() == True:
                         self.board.show_board()
-                        print(f"The Winner Is >>>>> {self.winner} <<<<<")
+                        if  self.winner == self.player[0].symbol:
+                            print(f"The Winner Is >>>>> {self.player[0].name} <<<<<") 
+                        else:
+                            print(f"The Winner Is >>>>> {self.player[1].name} <<<<<")  
                         choice = self.menu.displayer_end_menu()
                         if choice == "1":
                             self.restart_game()
