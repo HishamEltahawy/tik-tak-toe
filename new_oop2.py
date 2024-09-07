@@ -9,7 +9,7 @@ class Player():
         self.symbol = ''
     def choose_name(self):
         while True:
-            choice = input('Type Your Name:')
+            choice = input('Type Your Name:').title()
             if choice.isalpha():
                 self.name = choice
                 break
@@ -18,7 +18,7 @@ class Player():
     def choose_symbol(self):
         while True:
             choice = input('Typer Your Symbol:').upper()
-            if len(choice) == 1 and choice.isdigit():
+            if len(choice) == 1 and choice.isdigit() == False:
                 self.symbol = choice
                 break
             else:
@@ -78,6 +78,7 @@ class Game():
         self.board = Board()
         self.menu = Menu()
         self.player_round = 1
+        self.winner = "No One Wins"
     def start_game(self):
         choice = self.menu.displayer_main_menu()
         if choice == "1":
@@ -93,17 +94,30 @@ class Game():
             clearScreen()
     def play_game(self):
             while True:
+                clearScreen()
                 self.play_turn()
-                if self.check_win() or self.check_draw() :
-                    choice = self.menu.displayer_end_menu()
-                    if choice == "1":
-                        self.restart_game()
-                    else:
-                        self.quit_game()
-                        break
+                if self.check_win() or self.check_draw():
+                    if self.check_win() == True:
+                        self.board.show_board()
+                        print(f"The Winner Is >>>>> {self.winner} <<<<<")
+                        choice = self.menu.displayer_end_menu()
+                        if choice == "1":
+                            self.restart_game()
+                        else:
+                            self.quit_game()
+                            break
+                    elif self.check_draw() == True:
+                        self.board.show_board()
+                        print(f">>>>> {self.winner} <<<<<")
+                        choice = self.menu.displayer_end_menu()
+                        if choice == "1":
+                            self.restart_game()
+                        else:
+                            self.quit_game()
+                            break                       
     def play_turn(self):
-        self.switch_players()
-        player = self.player[self.curren_player_index]
+        self.switch_player()
+        player = self.player[self.player_round]
         self.board.show_board()
         print(f"{player.name}'s turn ({player.symbol})")
         while True:
@@ -118,21 +132,24 @@ class Game():
 
     def switch_player(self):
         self.player_round = 1- self.player_round
-    def check_win(self):
+    def check_win(self):      
         win_combination = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8]
-        ,[0, 3, 6], [1, 4, 5], [2, 5, 8]
+        ,[0, 3, 6], [1, 4, 7], [2, 5, 8]
         ,[0, 4, 8], [2, 4, 6]  ]
         for combo in win_combination:
             if self.board.board[combo[0]]  == self.board.board[combo[1]] == self.board.board[combo[2]]:
+                self.winner = self.board.board[combo[0]]
                 return True
-            else:
-                return False
+
     def check_draw(self):
-        pass
+        for cell in self.board.board:
+            if cell.isdigit():
+                return False
     def restart_game(self):
         self.board.reset_game()
         self.player_round = 1
+        self.winner = "No One Wins"
         self.play_game()
     def quit_game(self):
         print("Quiting Game.....")
